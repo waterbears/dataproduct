@@ -3,7 +3,7 @@ library(shiny)
 shinyUI(pageWithSidebar(
   headerPanel("Illusion of stucture in AR modeling"),
   sidebarPanel(
-    p("try p = n = 100, or p = 10, n = 1000. Both cases the data are random, but the first case shows an illusion of strucutre."),
+    p("try p = n = 100, or p = 10, n = 1000. Both cases the data are random, but the first case shows an illusion of strucutre. (non-zero eigenvalues)"),
     numericInput("p", "p, dimension of data", 100, min = 1, max = 1000, step = 1),
     numericInput("n", "n, amount of data", 100, min = 1, max = 1000, step = 1),
     actionButton("goButton", "Go!")
