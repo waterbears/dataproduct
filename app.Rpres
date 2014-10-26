@@ -1,0 +1,49 @@
+Illusion of structure in high-dimensional data
+========================================================
+author: waterbears
+date: 10/25/2014
+
+Traditional vs High-dimensional Statistics
+========================================================
+
+Given a data matrix $X$ with dimension $p$-by-$n$, where $p$ is the number of dimensions and $n$ is the number of data points:
+
+- Traditional statistics: data is low-dimensional, and there are many more data points collected, or $p \ll n$
+- High-dimensional statistics: data is high-dimensional, and the number of data points is similar to the data dimension, or $p \sim n$.
+
+**Question: do traditional statistics techniques work well with high-dimensional data?**
+
+Autoregressive modeling
+========================================================
+
+<small>In the simpliest autoregressive modeling setting, the columns of the data matrix $X$ are vectors collected across time, or $\vec{x}(t)$. Our goal is to find a matrix $A$ such that the following cost is minimized:
+$$|A\vec{x}(t) - \vec{x}(t - 1)|_2$$</small>
+
+<small>Here's an example of AR modeling in low-dimension where there isn't actual structure in the data (white noise). The fitted parameters are close to 0, reflecting the lack of strucutre.</small>
+
+```{r, size='footnote'}
+library(MASS); p = 2; n = 1000;
+x = matrix(rnorm(p * n), nrow=p, ncol=n)
+x1 = x[, 2:n]; x0 = x[, 1:n - 1]
+x1 %*% t(x0) %*% ginv(x0 %*% t(x0))
+```
+
+Autoregressive modeling in high-dimension
+========================================================
+
+<small>The same is not true when the data dimensionality is high. In the graph below, we set $p = 100, n = 100$, and visualize the eigenvalues of fitted $A$, which are significantly displaced from 0 (the ground truth).</small>
+
+<center>
+```{r, echo=FALSE}
+library(MASS); p = 100; n = 100;
+x = matrix(rnorm(p * n), nrow=p, ncol=n)
+x1 = x[, 2:n]; x0 = x[, 1:n - 1]
+E = eigen(x1 %*% t(x0) %*% ginv(x0 %*% t(x0)))$values
+plot(x=Re(E), y=Im(E), type='p')
+```
+</center>
+
+Our App
+========================================================
+
+Our educational app allows users to explore this illusion of structure in high-dimensional data. Users are allowed to set $p$ and $n$ of random data to arbituary values to see the effect on the fitted $A$ matrix's eigenvalues.
